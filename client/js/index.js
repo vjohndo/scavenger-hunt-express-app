@@ -1,15 +1,16 @@
 console.log('hi');
 
+// Want to eventually create document elements
 function renderHomePage() {
-    const section = document.getElementById("page");
-    section.innerHTML = `
+    const page = document.getElementById("page");
+    page.innerHTML = `
     <p>WELCOME HOME</p>
     `
 }
 
 function renderRulesPage() {
-    const section = document.getElementById("page");
-    section.innerHTML = `
+    const page = document.getElementById("page");
+    page.innerHTML = `
     <ol>
         <li>There are no rules</li>
         <li>The first rule is not a rule</li>
