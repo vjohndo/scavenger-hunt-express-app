@@ -13,7 +13,8 @@ const db = new pg.Pool({
 app.get("/api/challenges", (req, res) => {
   // Database access works via promise so need to do 
   db.query("select * from challenges").then((dbResult) => {
-    res.json({dbResult})
+    // Within the query, pull out the "rows" and set the key as challenges
+    res.json( {challenges: dbResult.rows} )
   })
 })
 

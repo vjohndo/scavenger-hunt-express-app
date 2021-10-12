@@ -1,0 +1,27 @@
+body {
+    width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+
+ul {
+    list-style: none;
+    text-align: left;
+    padding: 20px;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.navLink:hover {
+    cursor: pointer;
+}
+
+.challenge {
+    border: solid black 1px;
+}
+
