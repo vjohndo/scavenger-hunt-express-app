@@ -1,0 +1,22 @@
+{
+  "name": "scavenger-hunt-express-app",
+  "version": "1.0.0",
+  "description": "Practice App for Express",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vjohndo/scavenger-hunt-express-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vjohndo/scavenger-hunt-express-app/issues"
+  },
+  "homepage": "https://github.com/vjohndo/scavenger-hunt-express-app#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
