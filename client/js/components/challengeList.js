@@ -5,7 +5,7 @@ function renderChallengeList() {
     page.replaceChildren("");
 
     axios.get("http://localhost:3000/api/challenges").then((response) => {
-        const challenges = response.data.challenges;
+        const challenges = response.data;
     
         for (challengeObject of challenges) {
             const newChallenge = document.createElement('ul');

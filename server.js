@@ -1,22 +1,21 @@
 const express = require("express");
-const pg = require('pg');
+
+const Challenges = require('./models/challenges')
 
 const app = express();
 const port = 3000;
 
-// All the information required to access the local database
-// This is a constructor so need to call new
-const db = new pg.Pool({
-  database: "scavenger_hunt"
-})
+// app.get("/api/challenges", (req, res) => {
+//     Challenges.getAll().then(challenges => {
+//       res.json(challenges);
+//     });
+// });
 
-app.get("/api/challenges", (req, res) => {
-  // Database access works via promise so need to do 
-  db.query("select * from challenges").then((dbResult) => {
-    // Within the query, pull out the "rows" and set the key as challenges
-    res.json( {challenges: dbResult.rows} )
-  })
-})
+// ALTERNATE ASYNC SYNTAX
+app.get("/api/challenges", async(req,res) => {
+  const challenges = await Challenges.getAll();
+  res.json(challenges);
+});
 
 app.use(express.static("client"));
 
