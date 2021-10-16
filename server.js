@@ -2,7 +2,7 @@ const express = require("express");
 
 const middlewareRouter = require('./middleware/middelware');
 const loggerRouter = require('./middleware/logger');
-const errorRouter = require('./middleware/error');
+const errorHandler = require('./middleware/error');
 const rulesRouter = require('./controllers/rules');
 const challengesRouter = require('./controllers/challenges');
 
@@ -11,6 +11,7 @@ const port = 3000;
 
 app.use("/", loggerRouter)
 
+// Checks for any files in the static client
 app.use(express.static("client"));
 
 app.use("/", middlewareRouter)
@@ -20,7 +21,12 @@ app.use("/api/challenges", challengesRouter);
 
 app.use("/api/rules", rulesRouter);
 
-app.use("/", errorRouter)
+app.get("/throwerror", (req, res) => {
+    boom();
+    res.send('HAHAHA')
+});
+
+app.use(errorHandler);
 
 // start the web server
 app.listen(port, () => {

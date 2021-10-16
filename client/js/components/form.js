@@ -1,26 +1,39 @@
 const renderForm = () => {
   
-  // Get the page 
-  const page = document.getElementById("page");
+    // Get the page 
+    const page = document.getElementById("page");
 
-    // Create a form document
+    // Create a form document... have replace children at the end
     const form = document.createElement("form");
-    form.innerHTML = `
-        <fieldset>
-            <label for="name">Name:</label><br>
-            <input type="text" name="name">
-        </fieldset>
-        <fieldset>
-            <label for="address">Challenge:</label><br>
-            <input type="text" name="challenge">
-        </fieldset>
-        <fieldset>
-            <label for="address">Address:</label><br>
-            <input type="text" name="address">
-        </fieldset>
-        <input type="submit">
-        <p id="confirmInsert"></p>
-        `;
+
+    const formInputs = ["name","challenge","address"];
+
+    // Go through each of the inputs, create elements for them
+    for (let inputName of formInputs) {
+        let newFieldSet = document.createElement("fieldset");
+
+        let newLabel = document.createElement("label");
+        newLabel.htmlFor = inputName;
+        newLabel.textContent = inputName + ":";
+
+        let newInput = document.createElement("input");
+        newInput.type = 'text';
+        newInput.name = inputName;
+
+        newFieldSet.appendChild(newLabel);
+        let newBr = document.createElement("br");
+        newFieldSet.appendChild(newBr);
+        newFieldSet.appendChild(newInput);
+        form.appendChild(newFieldSet);
+    }
+
+    const newSubmit = document.createElement("input");
+    newSubmit.type = "submit";
+    newSubmit.value = "Add Challenge";
+    form.appendChild(newSubmit);
+
+    const newP = document.createElement("p");
+    newP.id = "confirmInsert";
 
     // Add event listener that deals with the submit
     form.addEventListener("submit", (event) => {
@@ -34,19 +47,18 @@ const renderForm = () => {
         const data = Object.fromEntries(formData.entries())
 
         // Send the challenges 
-        axios.post('/api/challenges', data).then((res) => {
-
-            const confirmMessage = document.getElementById("confirmInsert");
-            console.log(res)
-
-            if (res.data.rowCount) {
+        axios.post('/api/challenges', data)
+            .then((res) => {
+                console.log(res)
                 renderChallengeList();
-            } else {
-                confirmMessage.textContent = "Challenge Couldn't Be Added";
-            }
-        })
+            })
+            .catch(err => {
+                const confirmMessage = document.getElementById("confirmInsert");
+                confirmMessage.textContent = (err.response.data.message);
+                console.log(err.response.data.message);
+            })            
     })
 
-    page.replaceChildren(form);
+    page.replaceChildren(form, newP);
 
 };

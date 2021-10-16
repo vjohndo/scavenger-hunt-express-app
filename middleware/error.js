@@ -1,10 +1,6 @@
-const express = require("express")
+const errorHandler = (err, req, res, next) => {
+    let message = err.message || 'something went wrong'
+    res.status(500).json({ "message": message })
+};
 
-const router = express.Router();
-
-router.use((err, req, res, next) => {
-    res.status(500)
-    res.json({ "message": err.message })
-});
-
-module.exports = router;
+module.exports = errorHandler

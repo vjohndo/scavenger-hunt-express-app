@@ -29,11 +29,37 @@ router.get("/:id", (req, res) => {
     });
 });
 
+// Katie's code example 
+// router.post('/', (req, res) => {
+//     const { name, challenge, address } = req.body
+//     if (name === undefined || name === '') {
+//         res.status(400).json({message: 'name is required'})
+//         return
+//     }
+// })
+
+
 router.post("/", (req, res) => {
-    Challenges.insertByJSON(req.body).then((dbRes) => {
-        // If you call this API the request.data will contain this HJSON FILE. 
-        res.json(dbRes);
-    });
+    const {name, challenge, address} = req.body 
+
+    console.log(!name, !challenge, !address);
+
+    if (!name || !challenge || !address) {
+        res.status(400).json({message: 'Empty fields'});
+        return
+    } else if (Challenges.addressExists(req.body).then((dbRes) => dbRes)) {
+        console.log(Challenges.addressExists(req.body).then((dbRes) => dbRes));
+        res.status(400).json({message: 'Address already exists in DB'});
+        return
+    } else if (Challenges.challengesExists(req.body)) {
+        res.status(400).json({message: 'Challenges already exists in DB'});
+        return
+    } else {
+        Challenges.insertByJSON(req.body).then((dbRes) => {
+            // If you call this API the request.data will contain this HJSON FILE. 
+            res.json(dbRes);
+        });
+    }
 });
 
 module.exports = router;
