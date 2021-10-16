@@ -6,11 +6,19 @@ const Challenges = {
     return db.query(sql).then((dbRes) => dbRes.rows);
   },
   getById(reqId) {
-    const query = {
+    const sql = {
       text: `SELECT * FROM challenges WHERE ID = $1`,
       values: [reqId],
     };
-    return db.query(query).then((dbRes) => dbRes.rows[0])
+    return db.query(sql).then((dbRes) => dbRes.rows[0])
+  },
+  insertByJSON(reqObject) {
+    const {name, challenge, address} = reqObject
+    const sql = {
+      text: "INSERT INTO challenges(name, challenge, address) VALUES ($1, $2, $3)",
+      values: [name, challenge, address]
+    }
+    return db.query(sql).then((dbRes) => dbRes)
   }
 };
 

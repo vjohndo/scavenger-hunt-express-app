@@ -3,8 +3,9 @@ function renderHeader() {
     const header = document.getElementById("header-nav");
 
     const linksObject = {
-        Home: 'renderChallengeList()',
-        Rules: 'renderRulesPage()'
+        "Home": 'renderChallengeList()',
+        "Rules": 'renderRulesPage()',
+        "New Challenge": 'renderForm()'
     }
 
     const headerTitle = document.createElement("h1");

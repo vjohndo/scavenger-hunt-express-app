@@ -1,8 +1,10 @@
 const express = require("express");
-
+const db = require("../database/db");
 const Challenges = require("../models/challenges");
-
 const router = express.Router();
+
+// Run this to be able to parse through body
+router.use(express.json());
 
 // At this point we'll have taken in a route with api/challenges
 router.get("/", (req, res) => {
@@ -24,6 +26,13 @@ router.get("/:id", (req, res) => {
     console.log("getting unique challenges");
     Challenges.getById(reqId).then((challenges) => {
       res.json(challenges);
+    });
+});
+
+router.post("/", (req, res) => {
+    Challenges.insertByJSON(req.body).then((dbRes) => {
+        // If you call this API the request.data will contain this HJSON FILE. 
+        res.json(dbRes);
     });
 });
 
