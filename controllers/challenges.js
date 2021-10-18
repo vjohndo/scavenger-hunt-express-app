@@ -52,32 +52,34 @@ router.post("/", (req, res) => {
     
     const errorMessage = {"message": ""};
 
-    Challenges.addressExists(req.body).then((dbRes) => {
-        console.log("address response", dbRes);
-        if (dbRes) {
-            errorMessage.message = 'Address already exists in DB. ';
-        }
-    });
 
-    Challenges.challengeExists(req.body).then((dbRes) => {
-        console.log("challenge response", dbRes);
-        if (dbRes) {
-            errorMessage["message"] = 'Challenge already exists in DB. ';
-        };
-    });
+    // Need to query the DB while waiting on the requests
+    // This implementation keeps using .then to run synchronusly, in future figure out a better way and make sure to call then on the right brackets
 
-    console.log(errorMessage);
-
-    if (errorMessage.message) {
-        res.status(400).json(errorMessage);
-        return
-    }
-    
-    Challenges.insertByJSON(req.body).then((dbRes) => {
-            // If you call this API the request.data will contain this HJSON FILE. 
-            res.json(dbRes);
-        });
-    }
-);
+    Challenges.addressExists(req.body)
+        .then( (dbRes) => {
+            if (dbRes) {
+                errorMessage.message += 'Address already exists in DB. ';
+            }
+        })
+                .then( () => {
+                    Challenges.challengeExists(req.body).then( (dbRes) => {
+                        if (dbRes) {
+                            errorMessage.message += 'Challenge already exists in DB. ';
+                        };
+                    })
+                        .then( () => {
+                            if (errorMessage.message) {
+                                res.status(400).json(errorMessage);
+                                return
+                            } else {
+                                Challenges.insertByJSON(req.body).then((dbRes) => {
+                                    // If you call this API the request.data will contain this HJSON FILE. 
+                                    res.json(dbRes);
+                                });
+                            }
+                        })
+                })
+});
 
 module.exports = router;
