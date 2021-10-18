@@ -38,6 +38,13 @@ const Challenges = {
             values: [address]
         }
         return db.query(sql).then((dbRes) => dbRes.rows[0])
+    },
+    delete(reqId) {
+        const sql = {
+            text: `DELETE FROM challenges WHERE ID = $1`,
+            values: [reqId],
+        };
+        return db.query(sql).then((dbRes) => dbRes.rows[0])
     }
 };
 

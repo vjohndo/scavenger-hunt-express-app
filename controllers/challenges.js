@@ -1,6 +1,4 @@
-const e = require("express");
 const express = require("express");
-const db = require("../database/db");
 const Challenges = require("../models/challenges");
 const router = express.Router();
 
@@ -81,5 +79,17 @@ router.post("/", (req, res) => {
                         })
                 })
 });
+
+router.delete("/:id", (req, res) => {
+    const reqId = req.params.id;
+    Challenges.getById(reqId).then((challenges) => {
+        if (challenges) {
+            Challenges.delete(reqId)
+            res.json({message: 'Deleted'})
+        } else {
+            res.status(400).json({message: 'ID does not exist'})
+        }
+    })
+})
 
 module.exports = router;
