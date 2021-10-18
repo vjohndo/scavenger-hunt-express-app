@@ -21,20 +21,23 @@ const Challenges = {
         return db.query(sql).then((dbRes) => dbRes)
     },
     challengeExists(reqObject) {
+        console.log('Checked challenge');
         const {challenge} = reqObject
         const sql = {
             text: "SELECT * FROM challenges WHERE challenge = $1",
             values: [challenge]
         }
-        return db.query(sql).then((dbRes) => Boolean(dbRes[0]))
+        // need to return the rows
+        return db.query(sql).then((dbRes) => dbRes.rows[0])
     },
     addressExists(reqObject) {
+        console.log('Checked address');
         const {address} = reqObject
         const sql = {
             text: "SELECT * FROM challenges WHERE address = $1",
             values: [address]
         }
-        return db.query(sql).then((dbRes) => Boolean(dbRes[0]))
+        return db.query(sql).then((dbRes) => dbRes.rows[0])
     }
 };
 

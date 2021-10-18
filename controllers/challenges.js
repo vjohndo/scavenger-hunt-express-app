@@ -1,3 +1,4 @@
+const e = require("express");
 const express = require("express");
 const db = require("../database/db");
 const Challenges = require("../models/challenges");
@@ -47,19 +48,36 @@ router.post("/", (req, res) => {
     if (!name || !challenge || !address) {
         res.status(400).json({message: 'Empty fields'});
         return
-    } else if (Challenges.addressExists(req.body).then((dbRes) => dbRes)) {
-        console.log(Challenges.addressExists(req.body).then((dbRes) => dbRes));
-        res.status(400).json({message: 'Address already exists in DB'});
+    } 
+    
+    const errorMessage = {"message": ""};
+
+    Challenges.addressExists(req.body).then((dbRes) => {
+        console.log("address response", dbRes);
+        if (dbRes) {
+            errorMessage.message = 'Address already exists in DB. ';
+        }
+    });
+
+    Challenges.challengeExists(req.body).then((dbRes) => {
+        console.log("challenge response", dbRes);
+        if (dbRes) {
+            errorMessage["message"] = 'Challenge already exists in DB. ';
+        };
+    });
+
+    console.log(errorMessage);
+
+    if (errorMessage.message) {
+        res.status(400).json(errorMessage);
         return
-    } else if (Challenges.challengesExists(req.body)) {
-        res.status(400).json({message: 'Challenges already exists in DB'});
-        return
-    } else {
-        Challenges.insertByJSON(req.body).then((dbRes) => {
+    }
+    
+    Challenges.insertByJSON(req.body).then((dbRes) => {
             // If you call this API the request.data will contain this HJSON FILE. 
             res.json(dbRes);
         });
     }
-});
+);
 
 module.exports = router;
