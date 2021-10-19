@@ -18,7 +18,10 @@
   },
   "homepage": "https://github.com/vjohndo/scavenger-hunt-express-app#readme",
   "dependencies": {
+    "connect-pg-simple": "^7.0.0",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.2",
     "pg": "^8.7.1"
   }
 }

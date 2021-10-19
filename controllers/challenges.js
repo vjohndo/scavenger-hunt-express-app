@@ -1,9 +1,12 @@
 const express = require("express");
 const Challenges = require("../models/challenges");
+const ensureAuth = require("../middleware/ensureAuth")
 const router = express.Router();
 
 // Run this to be able to parse through body
 router.use(express.json());
+
+router.use(ensureAuth);
 
 // At this point we'll have taken in a route with api/challenges
 router.get("/", (req, res) => {
@@ -18,7 +21,6 @@ router.get("/", (req, res) => {
 //   const challenges = await Challenges.getAll();
 //   res.json(challenges);
 // });
-
 
 router.get("/:id", (req, res) => {
     const reqId = req.params.id;
