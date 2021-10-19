@@ -1,11 +1,12 @@
 // This function will be immediately called
 function renderHeader() {
     const header = document.getElementById("header-nav");
+    header.replaceChildren("")
 
     const linksObject = {
         "Home": 'renderChallengeList()',
         "Rules": 'renderRulesPage()',
-        "New Challenge": 'renderForm()'
+        "New Challenge": 'renderForm()',
     }
 
     const headerTitle = document.createElement("h1");
@@ -22,6 +23,22 @@ function renderHeader() {
         headerUl.append(newLi);
     }
 
-    header.append(headerTitle,headerUl);
-
+    axios.get('/api/sessions')
+        .then( (res) => { 
+            let newLi = document.createElement("li");
+            newLi.classList.add('navLink');
+            newLi.setAttribute('onclick','logout()');
+            newLi.textContent = "Logout";
+            headerUl.append(newLi);
+        })
+        .catch( (err) => {
+            let newLi = document.createElement("li");
+            newLi.classList.add('navLink');
+            newLi.setAttribute('onclick','renderLogin()');
+            newLi.textContent = "Login";
+            headerUl.append(newLi);
+        })
+        .then( () => {
+            header.append(headerTitle,headerUl);
+        });
 }

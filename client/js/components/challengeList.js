@@ -22,7 +22,7 @@ function renderChallengeList() {
 
             // Adds the delete
             let deleteButton = document.createElement('button');
-            deleteButton.textContent = "delete";
+            deleteButton.textContent = "DELETE";
             deleteButton.dataset.id = id;
             deleteButton.addEventListener('click', (event) => {
                 axios.delete(`http://localhost:3000/api/challenges/${id}`).then((res)=> {

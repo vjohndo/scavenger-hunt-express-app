@@ -6,7 +6,7 @@ const router = express.Router();
 // Run this to be able to parse through body
 router.use(express.json());
 
-router.use(ensureAuth);
+
 
 // At this point we'll have taken in a route with api/challenges
 router.get("/", (req, res) => {
@@ -39,7 +39,7 @@ router.get("/:id", (req, res) => {
 //     }
 // })
 
-
+router.use(ensureAuth);
 router.post("/", (req, res) => {
     const {name, challenge, address} = req.body 
 
@@ -51,10 +51,9 @@ router.post("/", (req, res) => {
     } 
     
     const errorMessage = {"message": ""};
-
-
     // Need to query the DB while waiting on the requests
     // This implementation keeps using .then to run synchronusly, in future figure out a better way and make sure to call then on the right brackets
+    // Better implementation involves using ASYNC AWAY syntax and combining 
 
     Challenges.addressExists(req.body)
         .then( (dbRes) => {
@@ -62,24 +61,24 @@ router.post("/", (req, res) => {
                 errorMessage.message += 'Address already exists in DB. ';
             }
         })
-                .then( () => {
-                    Challenges.challengeExists(req.body).then( (dbRes) => {
-                        if (dbRes) {
-                            errorMessage.message += 'Challenge already exists in DB. ';
-                        };
-                    })
-                        .then( () => {
-                            if (errorMessage.message) {
-                                res.status(400).json(errorMessage);
-                                return
-                            } else {
-                                Challenges.insertByJSON(req.body).then((dbRes) => {
-                                    // If you call this API the request.data will contain this HJSON FILE. 
-                                    res.json(dbRes);
-                                });
-                            }
-                        })
-                })
+        .then( () => {
+            Challenges.challengeExists(req.body).then( (dbRes) => {
+                if (dbRes) {
+                    errorMessage.message += 'Challenge already exists in DB. ';
+                };
+            })
+        .then( () => {
+            if (errorMessage.message) {
+                res.status(400).json(errorMessage);
+                return
+            } else {
+                Challenges.insertByJSON(req.body).then((dbRes) => {
+                    // If you call this API the request.data will contain this JSON FILE. 
+                    res.json(dbRes);
+                });
+            }
+        })
+        })
 });
 
 router.delete("/:id", (req, res) => {

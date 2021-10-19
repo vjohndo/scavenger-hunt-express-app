@@ -27,8 +27,8 @@ const port = 3000;
 // ************************* //
 
 // Logger middleware
-app.use(middleware);
-app.use(logger);
+// app.use(middleware);
+// app.use(logger);
 
 // Session middleware & router
 app.use(
