@@ -1,3 +1,4 @@
+// Packages for express
 const express = require("express");
 
 // Packages for sessions
@@ -21,7 +22,9 @@ const challengesRouter = require('./controllers/challenges');
 const app = express();
 const port = 3000;
 
-// __ROUTES AND MIDDLEWARE__ //
+// ************************* //
+// **ROUTES AND MIDDLEWARE** //
+// ************************* //
 
 // Logger middleware
 app.use(middleware);
